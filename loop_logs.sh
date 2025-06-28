@@ -17,8 +17,9 @@ echo "Script Stating date : $(date)" &>>$LOG_FILE
  then
     echo -e "$R please run this script by using roor user $N"  | tee -a &>>$LOG_FILE 
     exit 1
-else
+ else
     echo "Your runing with root user" &>>$LOG_FILE
+ fi
 
 VALIDATE(){
     if [ $1 -eq 0 ]
