@@ -2,7 +2,8 @@
 
 USERID=$(id -u)
 
-if [ "$USERID" -ne 0 ]; then
+if [ "$USERID" -ne 0 ]
+ then
     echo "Please run this script as root."
     exit 1
 else
@@ -10,11 +11,11 @@ else
 fi
 
 # Check if MySQL Server is installed
-dpkg -s mysql-server &> /dev/null
+dpkg -s mysql &> /dev/null
 
 if [ $? -ne 0 ]; then
     echo "MySQL is not installed. Proceeding to install..."
-    apt update && apt install mysql-server -y
+    apt update && apt install mysql -y
     if [ $? -eq 0 ]; then
         echo "Installing MySQL... SUCCESS"
     else
