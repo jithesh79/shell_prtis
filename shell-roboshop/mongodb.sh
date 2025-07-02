@@ -1,54 +1,46 @@
-#!/bin/bash
-
 USERID=$(id -u)
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
-LOGS_FOLder="/var/logs/roboshop-logs"
-SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
+LOGS_FOLDER="/var/logs/logsfile.sh"
+SCRIPT_NAME=$(echo $0 | cut "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
 mkdir -p $LOGS_FOLDER
-echo "Script started executing at: $(date)" | -a $LOG_FILE
+echo "Scripting starting date : $(date)"  | tee >>$LOG_FILE
 
-#check the user has root priveleges or not
-if [ $USERID -ne 0 ]
+if [$USERID -ne 0 ]
 then
-    echo -e "$R ERROR:: Please run this script with root access $N" | tee -a $LOG_FILE
-    exit ! #given other then 0 upto 127
+    echo -e "$R Please run this Script by root user $N " >>$LOG_FILE
+    exit 1
 else
-    echo "you are running with root access" | tee -a $LOG_FILE
+    echo "your run this Script By root user" >>$LOG_FILE
+
 fi
 
-# validate functions take input as exit status, what command they tried to install
-
-VALIDATE(){
-    if [ $1 -eq 0 ]
+VALATADE (){
+    if [ $1 -eq o ]
     then
-        echo -e "$2 is ... $G SUCCESS $N" | tee -a $LOG_FILE
-    else 
-        echo -e "$2 is ... $G FAILURE $N" | tee -a $LOG_FILE
+        echo -e " $2...$G Success $N " | tee >>$LOG_FILE
+    else
+        echo -e "  $2...$R Failner $N " | tee >>$LOG_FILE
         exit 1
-    fi 
+    fi
 
 }
 
 cp mongo.repo /etc/yum.repos.d/mongo.repo
-VALIDATE $? "Copying MongoDB repo"
+VALATADE $? "Copying MongoDb repo "
 
-dnf install mongodb-org -y  &>>$LOG_FILE
-VALIDATE $? "Installing MondoDB server"
+dnf mongo-org -y &>>$LOG_FILE
+VALATADE $? "Installing mongo db server"
 
-systemctl enable mongod  &>>$LOG_FILE
-VALIDATE $? "Enabling MondoDB"
+systemctl enable mongodb &>>$LOG_FILE
+VALATADE $? "Starting Mongodb"
 
-systemctl start mongod  &>>$LOG_FILE
-VALIDATE $? "Starting MondoDB"
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+VALATADE $? "Editing Mongo db config file and editing remot conntion "
 
-sed -i 's/127.0.0.1 to 0.0.0.0/g'   /etc/mongod.conf
-VALIDATE $? "Editing MonoDB conf file for remote connection"
-
-
-systemctl restart mongod  &>>$LOG_FILE
-VALIDATE $? "Restarting MondoDB"
+systemctl restart mongodb &>>$LOG_FILE
+VALATADE $? "Restating mongodb"
