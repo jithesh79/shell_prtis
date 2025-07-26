@@ -1,7 +1,7 @@
 - name: installig
   hosts: frontend
   become: yes
-  task:
+  tasks:
   - name: install packages
   ansible.bulitin.package:
     name: "{{ item}}"
