@@ -1,5 +1,5 @@
 - name: installig
-  hosts: frontend
+  hosts: backend
   become: yes
   tasks:
   - name: install packages
