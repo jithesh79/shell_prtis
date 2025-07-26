@@ -1,13 +1,15 @@
-- name: ansiblep laybook control
-  host: frontend
+- name: Ansible Playbook Control
+  hosts: frontend
   become: yes
-  task:
-  - name : install nginx if RedHat
-    ansible.builtin.dnf:
-      name: nginx
-      state: present
+  tasks:
+    - name: Install nginx if RedHat
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
       when: ansible_os_family == "RedHat"
-  - name: install nginx if debian
-    name: nginx
-    state: present
-    when: ansible_os_family == "Debian"
+
+    - name: Install nginx if Debian
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == "Debian"
