@@ -1,14 +1,12 @@
-- name: installig
+- name: installing packages
   hosts: backend
   become: yes
   tasks:
-  - name: install packages
-  ansible.builtin.package:
-    name: "{{ item}}"
-    state: install
-    loop:
-    - nginx
-    - mysql
-    - zip
-
-
+    - name: Install multiple packages
+      ansible.builtin.package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - nginx
+        - mysql
+        - zip
