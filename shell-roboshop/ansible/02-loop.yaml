@@ -1,0 +1,14 @@
+- name: installig
+  hosts: frontend
+  become: yes
+  task:
+  - name: install packages
+  ansible.bulitin.package:
+    name: "{{ item}}"
+    state: install
+    loop:
+    - nginx
+    - mysql
+    - zip
+
+
