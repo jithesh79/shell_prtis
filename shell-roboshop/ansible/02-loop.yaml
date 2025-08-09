@@ -1,5 +1,5 @@
 - name: installing packages
-  hosts: backend
+  hosts: node
   become: yes
   tasks:
     - name: Install multiple packages
